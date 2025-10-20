@@ -1,0 +1,58 @@
+[package]
+name = "rust_network_system"
+version = "0.1.0"
+edition = "2021"
+authors = ["Network System Team"]
+license = "BSD-3-Clause"
+description = "A production-ready, high-performance Rust async networking framework with TCP client/server"
+repository = "https://github.com/kcenon/rust_network_system"
+keywords = ["network", "tcp", "async", "tokio", "server"]
+categories = ["network-programming", "asynchronous"]
+
+[dependencies]
+tokio = { version = "1.42", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+bytes = "1.9"
+thiserror = "2.0"
+parking_lot = "0.12"
+crossbeam = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+async-trait = "0.1"
+tracing = "0.1"
+dashmap = "6.1"
+socket2 = "0.5"
+rand = "0.8"
+futures = "0.3"
+
+# Optional integration dependencies
+rust_thread_system = { path = "../rust_thread_system", optional = true }
+rust_logger_system = { path = "../rust_logger_system", optional = true }
+rust_monitoring_system = { path = "../rust_monitoring_system", optional = true }
+rust_container_system = { path = "../rust_container_system", optional = true }
+flate2 = { version = "1.0", optional = true }
+
+# TLS support
+tokio-rustls = { version = "0.26", optional = true }
+rustls = { version = "0.23", features = ["ring"], optional = true }
+rustls-pemfile = { version = "2.2", optional = true }
+rustls-native-certs = { version = "0.8", optional = true }
+sha2 = { version = "0.10", optional = true }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["async_tokio"] }
+tokio-test = "0.4"
+tracing-subscriber = "0.3"
+proptest = "1.4"
+
+[features]
+default = []
+integration = ["rust_thread_system", "rust_logger_system", "rust_monitoring_system", "rust_container_system", "flate2"]
+container = ["rust_container_system"]
+tls = ["tokio-rustls", "rustls", "rustls-pemfile", "rustls-native-certs", "sha2"]
+# SECURITY WARNING: Only enable for testing - disables TLS certificate validation
+insecure = []
+
+[[bench]]
+name = "network_benchmarks"
+harness = false

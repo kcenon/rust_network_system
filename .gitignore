@@ -1,0 +1,30 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Cargo lock file (uncomment for applications)
+# Cargo.lock
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test artifacts
+*.profraw
+*.profdata
+
+# Documentation build
+/doc/
+
+# Benchmark results
+/benches/results/
+
+# Temporary files
+*.tmp
+*.log
+*.log.*
