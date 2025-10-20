@@ -78,8 +78,15 @@ pub struct TlsConfig {
 
 impl TlsConfig {
     /// Create a new empty TLS configuration
+    ///
+    /// This will automatically install the default crypto provider (ring) if one hasn't
+    /// been installed yet. This is required by rustls 0.23+.
     #[must_use]
     pub fn new() -> Self {
+        // Install the default crypto provider if not already installed
+        // This is safe to call multiple times - it will only install once
+        let _ = rustls::crypto::ring::default_provider().install_default();
+
         Self {
             server_config: None,
             client_config: None,
@@ -537,6 +544,7 @@ mod tests {
     }
 
     #[test]
+    #[allow(deprecated)]
     fn test_insecure_client_config() {
         let config = TlsConfig::new().with_client_insecure();
         assert!(config.has_client_config());
